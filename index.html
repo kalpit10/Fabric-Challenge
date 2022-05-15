@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Fabric Challenge</title>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <label for="uploader">Select File:</label>
+    <input type = "file" id="uploader">
+
+    <script>
+      const canvas = document.getElementById('canvas'); //getting the canvas element above
+      const ctx = canvas.getContext('2d');//grabbing the rendering context, gives us access to drawing functions so we can manipulate what is on the canvas. Mainly used for drawing lines and shapes
+
+      const reader = new FileReader(); //reads files, in our case its going to be user uploaded images installed on user's computer
+      const img = new Image();
+
+      function uploadImage(e) {  //creating a function and will take an event information
+        reader.onload = () => { //function onload() means when reader has finished loading
+          img.onload = () => {  //image constructor has also finished loading, then
+
+            canvas.width = img.width; //canvas to take width according to image
+            canvas.height = img.height;//canvas to take height according to image
+            ctx.drawImage(img,0,0); //image will be on top left
+          };
+          img.src = reader.result; //image source should be equal to reader's result value
+        };
+        reader.readAsDataURL(e.target.files[0]);  //readAsDataURL is used to read the user's uploaded file, in our case the image files[0] is to access the very first file we upload
+      };
+
+      const imageLoader = document.getElementById('uploader');//calling image loader
+      imageLoader.addEventListener('change', uploadImage);//Listener event is going to listen to any change event when a new image is added
+    </script>
+  </body>
+</html>
